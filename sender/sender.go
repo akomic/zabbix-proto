@@ -41,6 +41,27 @@ func NewPacket(data []*Metric, clock ...int64) *Packet {
 	return p
 }
 
+type DiscoveryPayload struct {
+	Data []map[string]string `json:"data"`
+}
+
+func NewDiscoveryMetric(host, key, value []map[string]string, clock ...int64) *Metric {
+	payload := &DiscoveryPayload{Data: value}
+	jsonString, err := json.Marshal(&payload)
+
+	if err != nil {
+		fmt.Errorf("Error marshaling: %s", err.Error)
+	}
+
+	m := &Metric{Host: host, Key: key, Value: string(jsonString)}
+
+	// use current time, if `clock` is not specified
+	if m.Clock = time.Now().Unix(); len(clock) > 0 {
+		m.Clock = int64(clock[0])
+	}
+	return m
+}
+
 // DataLen Packet class method, return 8 bytes with packet length in little endian order.
 func (p *Packet) DataLen() []byte {
 	dataLen := make([]byte, 8)
