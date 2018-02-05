@@ -3,6 +3,7 @@ package sender
 import (
 	"encoding/binary"
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -45,7 +46,7 @@ type DiscoveryPayload struct {
 	Data []map[string]string `json:"data"`
 }
 
-func NewDiscoveryMetric(host, key, value []map[string]string, clock ...int64) *Metric {
+func NewDiscoveryMetric(host, key string, value []map[string]string, clock ...int64) *Metric {
 	payload := &DiscoveryPayload{Data: value}
 	jsonString, err := json.Marshal(&payload)
 
