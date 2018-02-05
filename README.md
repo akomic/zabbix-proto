@@ -1,7 +1,11 @@
 zabbix-proto
 ==============================================================================
 
-Example:
+Zabbix Golang package/Library that implements:
+- Active Checks (supports host metadata autoregistration)
+- Sender
+
+## Example
 
 ```
 package main
@@ -13,11 +17,15 @@ import (
 )
 
 func main() {
+    // Create new client
     c := client.NewClient("myzabbix.server.foo", 10051)
-    data, _ := c.GetActiveItems("monitored_hostname", "metadata")
 
+    // Retrieve items for host: myhostname.foo
+    data, _ := c.GetActiveItems("myhostname.foo", "metadata")
+
+    // Send collected metrics to Zabbix
     var metrics []*sender.Metric
-    metrics = append(metrics, sender.NewMetric("myzabbix.server.foo", "cpu", "1.22"))
+    metrics = append(metrics, sender.NewMetric("myhostname.foo", "cpu", "1.22"))
 
     packet := sender.NewPacket(metrics)
     res, err := c.Send(packet)
