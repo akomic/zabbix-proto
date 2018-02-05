@@ -6,8 +6,8 @@ import (
 	"io/ioutil"
 	"net"
 	"time"
-	"zabbix-proto/activechecks"
-	"zabbix-proto/sender"
+	"github.com/akomic/zabbix-proto/activechecks"
+	"github.com/akomic/zabbix-proto/sender"
 )
 
 type Client struct {
