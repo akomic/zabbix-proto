@@ -23,10 +23,24 @@ func main() {
     // Retrieve items for host: myhostname.foo
     data, _ := c.GetActiveItems("myhostname.foo", "metadata")
 
-    // Send collected metrics to Zabbix
+    // Add one metric
     var metrics []*sender.Metric
+
     metrics = append(metrics, sender.NewMetric("myhostname.foo", "cpu", "1.22"))
 
+    // Low Level Discovery
+    var discoveryData []map[string]string
+
+    discoveryItem := make(map[string]string)
+
+    discoveryItem["{#DEVICE}"] = "/dev/sda"
+    discoveryItem["{#NAME}"] = "Disk SDA"
+
+    discoveryData = append(discoveryData, discoveryItem)
+
+    metrics = append(metrics, sender.NewDiscoveryMetric("myhostname.foo", "diskDiscovery", discoveryData, time.Now().Unix()))
+
+    // Send collected metrics to Zabbix
     packet := sender.NewPacket(metrics)
     res, err := c.Send(packet)
 
