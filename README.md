@@ -52,3 +52,5 @@ func main() {
     }
 }
 ```
+
+[Inspired by](https://github.com/adubkov/go-zabbix)
